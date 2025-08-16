@@ -12,11 +12,13 @@ services:
       # Add API key via environment variable or Docker secrets
       - CLAUDE_API_KEY=${CLAUDE_API_KEY:-}
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      # Projects base directory for relative path resolution
+      - PROJECTS_BASE=${CONTAINER_PROJECTS_DIR:-/home/nodejs/Projects}
     volumes:
       # Mount Claude configuration directory
       - claude-config:/home/nodejs/.claude:rw
-      # Mount projects directory (adjust path as needed)
-      - ${PROJECTS_PATH:-./projects}:/home/nodejs/Projects:rw
+      # Mount projects directory from host
+      - ${HOST_PROJECTS_DIR:-./projects}:/home/nodejs/Projects:rw
       # Persistent data volumes
       - claudecodeui-uploads:/app/uploads:rw
       - claudecodeui-db:/app/data:rw

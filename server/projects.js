@@ -583,7 +583,13 @@ async function deleteProject(projectName) {
 
 // Add a project manually to the config (without creating folders)
 async function addProjectManually(projectPath, displayName = null) {
-  const absolutePath = path.resolve(projectPath);
+  // Use PROJECTS_BASE environment variable for Docker compatibility
+  const projectsBase = process.env.PROJECTS_BASE || '/home/nodejs/Projects';
+  
+  // Resolve path: if absolute, use as-is; if relative, resolve from projects base
+  const absolutePath = path.isAbsolute(projectPath) 
+    ? projectPath 
+    : path.resolve(projectsBase, projectPath);
   
   try {
     // Check if the path exists
